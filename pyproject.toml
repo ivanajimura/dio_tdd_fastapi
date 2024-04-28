@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "dio tdd project"
+version = "0.0.1"
+description = "Created for Python back-end developer bootcamp at DIO."
+authors = ["ivanajimura <ivanajimura@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "3.11.4"
+fastapi = "^0.110.2"
+uvicorn = "^0.29.0"
+pydantic = "^2.7.1"
+pydantic-settings = "^2.2.1"
+motor = "^3.4.0"
+pytest = "^8.2.0"
+pytest-asyncio = "^0.23.6"
+pre-commit = "^3.7.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
