@@ -16,7 +16,16 @@ pytest = "^8.2.0"
 pytest-asyncio = "^0.23.6"
 pre-commit = "^3.7.0"
 
+httpx = "^0.25.1"
 
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+addopts = [
+  "--strict-config",
+  "--strict-markers",
+  "--ignore=docs_src",
+]
+xfail_strict = true
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
