@@ -33,3 +33,10 @@ tests/usecases/__pycache__/test_product.cpython-311-pytest-8.2.0.pyc
 store/schemas/__pycache__/base.cpython-311.pyc
 store/schemas/__pycache__/base.cpython-311.pyc
 store/schemas/__pycache__/product.cpython-311.pyc
+venv/
+store/schemas/__pycache__/base.cpython-311.pyc
+store/schemas/__pycache__/product.cpython-311.pyc
+store/tests/__pycache__/__init__.cpython-311.pyc
+store/tests/schemas/__pycache__/__init__.cpython-311.pyc
+store/tests/schemas/__pycache__/factories.cpython-311.pyc
+store/tests/schemas/__pycache__/test_product.cpython-311-pytest-8.2.0.pyc

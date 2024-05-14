@@ -1,5 +1,5 @@
 run:
-	@uvicorn store.main:app  --reload
+	@uvicorn store.main:app --reload
 
 precommit-install:
 	@poetry run pre-commit install
@@ -15,3 +15,6 @@ run-docker:
 
 docker-check:
 	@docker ps
+
+stop-docker:
+	@docker stop $(docker ps -a -q)
