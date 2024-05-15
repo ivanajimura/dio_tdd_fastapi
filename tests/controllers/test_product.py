@@ -21,7 +21,7 @@ async def test_controller_create_should_return_success(client, products_url):
     }
 
 
-async def test_controller_post_shoud_return_422(client, products_url):
+async def test_controller_post_shoud_return_unprocessable(client, products_url):
     wrong_quantity_obj = {
         "name": "iPhone 14 Pro Max",
         "quantity": "a",  # should be an int, not a string
@@ -85,6 +85,17 @@ async def test_controller_patch_should_return_success(
         "quantity": 10,
         "price": 7500,
         "status": True,
+    }
+
+
+async def test_controller_patch_should_return_no_content(
+    client, products_url, product_inserted
+):
+    random_uid = uuid.uuid4()
+    response = await client.patch(f"{products_url}{random_uid}", json={"price": 9999})
+    assert response.status_code == status.HTTP_404_NOT_FOUND
+    assert response.json() == {
+        "detail": f"Product not found with filter UUID({random_uid})"
     }
 
 
