@@ -81,11 +81,9 @@ async def test_controller_patch_should_return_success(
     assert response.status_code == status.HTTP_200_OK
     content = response.json()
 
-    assert content == {
-        "quantity": 10,
-        "price": 7500,
-        "status": True,
-    }
+    assert content["quantity"] == 10
+    assert content["price"] == 7500
+    assert content["status"] is True
 
 
 async def test_controller_patch_should_return_no_content(
