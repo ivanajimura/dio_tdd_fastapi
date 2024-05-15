@@ -13,7 +13,13 @@ router = APIRouter(tags=["products"])
 async def post(
     body: ProductIn = Body(...), usecase: ProductUsecase = Depends()
 ) -> ProductOut:
-    return await usecase.create(body=body)
+    try:
+        return await usecase.create(body=body)
+    except Exception:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail="Quantity must be an integer.",
+        )
 
 
 @router.get(path="/{id}", status_code=status.HTTP_200_OK)

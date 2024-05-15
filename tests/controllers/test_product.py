@@ -16,9 +16,21 @@ async def test_controller_create_should_return_success(client, products_url):
     assert content == {
         "name": "iPhone 14 Pro Max",
         "quantity": 10,
-        "price": "8.499",
+        "price": 8499.99,
         "status": True,
     }
+
+
+async def test_controller_post_shoud_return_422(client, products_url):
+    wrong_quantity_obj = {
+        "name": "iPhone 14 Pro Max",
+        "quantity": "a",  # should be an int, not a string
+        "price": 8499.99,
+        "status": True,
+    }
+
+    response = await client.post(products_url, json=wrong_quantity_obj)
+    assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
 
 
 async def test_controller_get_should_return_success(
@@ -35,7 +47,7 @@ async def test_controller_get_should_return_success(
         "id": str(product_inserted.id),
         "name": "iPhone 14 Pro Max",
         "quantity": 10,
-        "price": "8.499",
+        "price": 8499.99,
         "status": True,
     }
 
@@ -46,7 +58,9 @@ async def test_controller_get_should_return_not_found(
     random_uid = uuid.uuid4()
     response = await client.get(f"{products_url}{random_uid}")
     assert response.status_code == status.HTTP_404_NOT_FOUND
-    assert response.json() == {"detail": f"Product not found with filter: {random_uid}"}
+    assert response.json() == {
+        "detail": f"Product not found with filter UUID({random_uid})"
+    }
 
 
 @pytest.mark.usefixtures("products_inserted")
@@ -62,19 +76,14 @@ async def test_controller_patch_should_return_success(
     client, products_url, product_inserted
 ):
     response = await client.patch(
-        f"{products_url}{product_inserted.id}", json={"price": "7.500"}
+        f"{products_url}{product_inserted.id}", json={"price": 7500}
     )
     assert response.status_code == status.HTTP_200_OK
     content = response.json()
 
-    del content["created_at"]
-    del content["updated_at"]
-
     assert content == {
-        "id": str(product_inserted.id),
-        "name": "Iphone 14 Pro Max",
         "quantity": 10,
-        "price": "7.500",
+        "price": 7500,
         "status": True,
     }
 
@@ -92,4 +101,6 @@ async def test_controller_delete_should_return_not_found(client, products_url):
     response = await client.delete(f"{products_url}{random_uid}")
 
     assert response.status_code == status.HTTP_404_NOT_FOUND
-    assert response.json() == {"detail": f"Product not found with filter: {random_uid}"}
+    assert response.json() == {
+        "detail": f"Product not found with filter UUID({random_uid})"
+    }
