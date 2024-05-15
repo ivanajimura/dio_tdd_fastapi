@@ -25,7 +25,7 @@ def products_data():
             "name": "iPhone 14 Max",
             "quantity": 0,
             "price": 7099,
-            "status": False,
+            "status": True,
         },
         {
             "name": "iPhone 15",

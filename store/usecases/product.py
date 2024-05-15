@@ -25,8 +25,40 @@ class ProductUsecase:
             raise NotFoundException(message=f"Product not found with filter UUID({id})")
         return ProductOut(**result)
 
-    async def query(self) -> List[ProductOut]:
-        return [ProductOut(**item) async for item in self.collection.find()]
+    async def query(
+        self,
+        quantity_min=None,
+        quantity_max=None,
+        price_min=None,
+        price_max=None,
+        name_partial=None,
+        status=None,
+    ) -> List[ProductOut]:
+        filter_query = {}
+        if quantity_min:
+            if "quantity" not in filter_query.keys():
+                filter_query["quantity"] = {}
+            filter_query["quantity"]["$gte"] = quantity_min
+        if quantity_max:
+            if "quantity" not in filter_query.keys():
+                filter_query["quantity"] = {}
+            filter_query["quantity"]["$lte"] = quantity_max
+        if price_min:
+            if "price" not in filter_query.keys():
+                filter_query["price"] = {}
+            filter_query["price"]["$gte"] = price_min
+        if price_max:
+            if "price" not in filter_query.keys():
+                filter_query["price"] = {}
+            filter_query["price"]["$lte"] = price_max
+        if name_partial:
+            filter_query["name"] = {"$regex": f"{name_partial}"}
+        if status is not None:
+            filter_query["status"] = status
+        return [
+            ProductOut(**item)
+            async for item in self.collection.find(filter=filter_query)
+        ]
 
     async def update(self, id: UUID, body: ProductUpdate) -> ProductUpdateOut:
         result = await self.collection.find_one_and_update(

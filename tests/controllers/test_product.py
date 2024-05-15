@@ -72,6 +72,14 @@ async def test_controller_query_should_return_success(client, products_url):
     assert len(response.json()) > 1
 
 
+@pytest.mark.usefixtures("products_inserted")
+async def test_controller_query_should_return_empty(client, products_url):
+    response = await client.get(f"{products_url}?status=false")
+    assert response.status_code == status.HTTP_200_OK
+    assert isinstance(response.json(), List)
+    assert len(response.json()) == 0
+
+
 async def test_controller_patch_should_return_success(
     client, products_url, product_inserted
 ):

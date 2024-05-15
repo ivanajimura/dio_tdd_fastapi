@@ -30,8 +30,23 @@ async def get(
 
 
 @router.get(path="/", status_code=status.HTTP_200_OK)
-async def query(usecase: ProductUsecase = Depends()) -> List[ProductOut]:
-    return await usecase.query()
+async def query(
+    quantity_min: int | None = None,
+    quantity_max: int | None = None,
+    price_min: float | None = None,
+    price_max: float | None = None,
+    name_partial: str | None = None,
+    status: bool | None = None,
+    usecase: ProductUsecase = Depends(),
+) -> List[ProductOut]:
+    return await usecase.query(
+        quantity_min=quantity_min,
+        quantity_max=quantity_max,
+        price_min=price_min,
+        price_max=price_max,
+        name_partial=name_partial,
+        status=status,
+    )
 
 
 @router.patch(path="/{id}", status_code=status.HTTP_200_OK)
